@@ -32,6 +32,12 @@ def main():
 
     system(f"uv run instaloader --load-cookies={BROWSER}")
 
+    try:
+        f = open(OUTPUT_FILE, "x")
+        f.close()
+    except FileExistsError:
+        print("found pre-existing output.txt file.")
+
     L = Instaloader(
         # user_agent = "", # might need this?
         download_pictures = False,
