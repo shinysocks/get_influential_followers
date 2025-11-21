@@ -10,10 +10,12 @@
 # ///
 
 from os import system
+from pathlib import Path
 from sys import exit, argv
 from instaloader import LoginException, Instaloader, Profile
 
 OUTPUT_FILE = "output.csv"
+FOLLOWERS_FILE = "followers.txt"
 
 def is_follower_in_lines(follower: str, lines: list) -> bool:
     for line in lines:
@@ -53,14 +55,28 @@ def main():
     profile = Profile.from_username(L.context, USER)
     print(f"found {profile.followers} followers for {USER}")
 
-    print("loading followers into memory...", end='')
+    print("loading followers into memory...", flush=True)
 
+    follower_count = 0
     followers = []
-    for follower in profile.get_followers():
-        followers.append(follower.username)
+
+    if (Path(FOLLOWERS_FILE).exists()):
+        print(f"followers already loaded into {FOLLOWERS_FILE}")
+        with open(FOLLOWERS_FILE, "r+") as ff:
+            followers = ff.read().splitlines()
+    else:
+        for follower in profile.get_followers():
+            followers.append(follower.username)
+            follower_count += 1
+            if follower_count % 50 == 0:
+                print(f"{follower_count}/{profile.followers}")
+
+        with open(FOLLOWERS_FILE, "w+") as ff:
+            for follower in followers:
+                ff.write(follower + "\n")
 
     print("done")
-
+    
     current_lines = []
     with open(OUTPUT_FILE, "r+") as file:
         current_lines = file.readlines()

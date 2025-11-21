@@ -1,4 +1,5 @@
 output.csv
+followers.txt
 __pycache__/
 build/
 dist/
