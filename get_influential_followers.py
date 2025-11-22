@@ -32,8 +32,6 @@ def main():
     USER = argv[1]
     BROWSER = argv[2]
 
-    system(f"uv run instaloader --load-cookies={BROWSER}")
-
     try:
         f = open(OUTPUT_FILE, "x")
         f.close()
@@ -41,7 +39,6 @@ def main():
         print("found pre-existing output.txt file.")
 
     L = Instaloader(
-        # user_agent = "", # might need this?
         download_pictures = False,
         download_videos = False,
         download_video_thumbnails = False,
@@ -51,11 +48,6 @@ def main():
         request_timeout = 300.0,
         iphone_support = False
     )
-    L.load_session_from_file(USER)
-    profile = Profile.from_username(L.context, USER)
-    print(f"found {profile.followers} followers for {USER}")
-
-    print("loading followers into memory...", flush=True)
 
     follower_count = 0
     followers = []
@@ -65,6 +57,13 @@ def main():
         with open(FOLLOWERS_FILE, "r+") as ff:
             followers = ff.read().splitlines()
     else:
+        system(f"uv run instaloader --load-cookies={BROWSER}")
+        L.load_session_from_file(USER)
+        profile = Profile.from_username(L.context, USER)
+        print(f"found {profile.followers} followers for {USER}")
+
+        print("loading followers into memory...", flush=True)
+
         for follower in profile.get_followers():
             followers.append(follower.username)
             follower_count += 1
@@ -76,7 +75,7 @@ def main():
                 ff.write(follower + "\n")
 
     print("done")
-    
+
     current_lines = []
     with open(OUTPUT_FILE, "r+") as file:
         current_lines = file.readlines()
