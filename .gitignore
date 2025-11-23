@@ -1,5 +1,6 @@
 output.csv
 followers.txt
+followers_1.json
 __pycache__/
 build/
 dist/
@@ -7,3 +8,4 @@ wheels/
 uv.lock
 .python-version
 .venv
+.DS_Store
