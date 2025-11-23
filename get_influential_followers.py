@@ -5,19 +5,20 @@
 #   influential followers for any signed in instagram account!
 
 # /// script
-# requires-python = ">=3.14"
+# requires-python = ">=3.12"
 # dependencies = [ "instaloader", "browser_cookie3" ]
 # ///
 
 from os import system
 from pathlib import Path
 from sys import exit, argv
-from instaloader import LoginException, Instaloader, Profile
+from instaloader import Instaloader, Profile, ConnectionException
 
 OUTPUT_FILE = "output.csv"
 FOLLOWERS_FILE = "followers.txt"
 
-def is_follower_in_lines(follower: str, lines: list) -> bool:
+
+def is_follower_in_lines(follower: str, lines: list[str]) -> bool:
     for line in lines:
         if follower in line:
             return True
@@ -39,18 +40,18 @@ def main():
         print("found pre-existing output.txt file.")
 
     L = Instaloader(
-        download_pictures = False,
-        download_videos = False,
-        download_video_thumbnails = False,
-        download_geotags = False,
-        download_comments = False,
-        max_connection_attempts = 5,
-        request_timeout = 300.0,
-        iphone_support = False
+        download_pictures=False,
+        download_videos=False,
+        download_video_thumbnails=False,
+        download_geotags=False,
+        download_comments=False,
+        max_connection_attempts=10,
+        request_timeout=300.0,
+        iphone_support=False
     )
 
     follower_count = 0
-    followers = []
+    followers: list[str] = []
 
     if (Path(FOLLOWERS_FILE).exists()):
         print(f"followers already loaded into {FOLLOWERS_FILE}")
@@ -92,6 +93,10 @@ def main():
             except KeyboardInterrupt:
                 f.close()
                 exit()
+            except ConnectionException:
+                print("rate-limit hit, please wait a few minutes and rerun script")
+                f.close()
+                exit()
             print(f"added {follower}")
         else:
             print(f"already added {follower}")
@@ -104,6 +109,7 @@ def main():
         file.seek(0)
         file.truncate()
         file.writelines(lines)
+
 
 if __name__ == "__main__":
     main()
