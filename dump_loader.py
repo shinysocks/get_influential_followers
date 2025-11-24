@@ -1,3 +1,8 @@
+# this takes all the json dumps from meta account center
+# and creates a single-column .txt of followers.
+# which can be used by get_influential_followers.py
+
+
 from os import system
 import glob
 import json
