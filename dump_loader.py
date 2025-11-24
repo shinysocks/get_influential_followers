@@ -1,6 +1,8 @@
 # this takes all the json dumps from meta account center
 # and creates a single-column .txt of followers.
 # which can be used by get_influential_followers.py
+#
+# https://accountscenter.instagram.com/info_and_permissions/
 
 
 from os import system
