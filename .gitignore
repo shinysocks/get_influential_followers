@@ -1,11 +1,12 @@
 output.csv
 followers.txt
-followers_1.json
+followers_*.json
 __pycache__/
 build/
 dist/
 wheels/
 uv.lock
+tim/
 .python-version
 .venv
 .DS_Store
