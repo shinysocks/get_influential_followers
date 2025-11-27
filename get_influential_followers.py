@@ -45,7 +45,7 @@ def main():
         download_video_thumbnails=False,
         download_geotags=False,
         download_comments=False,
-        max_connection_attempts=10,
+        max_connection_attempts=1,
         request_timeout=300.0,
         iphone_support=False
     )
