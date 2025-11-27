@@ -2,6 +2,7 @@
 
 # this script restarts an ec2 instance periodically to cycle ip
 # addresses and evade instagram blacklisting ips
+# note: aws cli authenticated sessions last only 12 hours
 
 INSTANCEID="i-magicalawsnumber"
 
