@@ -14,10 +14,19 @@ uv run get_influential_followers.py USERNAME BROWSER
 uv run get_influential_followers.py francescahongwi chrome
 ```
 > [!NOTE]
-> This script is resumable and will pick up where it left off if it is cancelled. After retrieving the initial followers list, the script retrieves follower counts for each username without signing in to the original account.
+> This script is resumable and will pick up where it left off if it is cancelled. After retrieving the initial followers list,
+> the script retrieves follower counts for each username without signing in to the original account.
 
 ## How to use `cycle_ec2_ip.sh`
 ```bash
 aws login
 . cycle_ec2_ip.sh
 ```
+> [!NOTE]
+> Use crontab to automatically start the python script when the ec2 instance is started and initial followers.txt
+> data has already been retrieved.
+> ```
+> # crontab
+> @reboot (cd /home/ec2-user && uv run get_influential_followers.py a b)
+> ```
+
